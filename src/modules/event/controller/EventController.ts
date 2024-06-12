@@ -3,6 +3,7 @@ import { EventRepository } from "../repository/event.repository.prisma";
 import { prisma } from "../../../config/prisma";
 import { CreateEventInputDto, CreateEventUsecase } from "../usecases/CreateEvent.usecase";
 import { UserPrismaRepository } from "../../user/repository/user.repository.prisma";
+import { GetAllActiveEvents, GetAllActiveEventsInputDto } from "../usecases/GetAllActiveEvents.usecase";
 
 export class EventController {
 
@@ -28,6 +29,23 @@ export class EventController {
             name: req.body.name,
             startTime: req.body.startTime,
             lastDay:req.body.lastDay,
+        }
+
+        const usecaseResponse = await usecase.execute(inputDto)
+
+        res.status(usecaseResponse.status).json({ ...usecaseResponse }).send()
+    }
+
+
+    async getAllActiveEvents(req: Request, res: Response) {
+
+        const eventRepo = EventRepository.create(prisma)
+
+        const usecase = GetAllActiveEvents.create(eventRepo)
+
+        const inputDto: GetAllActiveEventsInputDto = {
+            limit: req.body.limit,
+            offset: req.body.offset,
         }
 
         const usecaseResponse = await usecase.execute(inputDto)
