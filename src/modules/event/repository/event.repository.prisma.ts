@@ -35,17 +35,22 @@ export class EventRepository implements IEventRepository {
         }
     }
 
-    async deleteById(id: string): Promise<void> {
+    async softDeleteById(id: string): Promise<void> {
         try {
 
-            await this.prismaClient.event.delete({ where: { id } })
+            await this.prismaClient.event.update({
+                where: {id},
+                data: {
+                    deletedAt: new Date()
+                }
+            })
 
         } catch (error) {
             console.log('EventRepository - deleteById', error)
-
         }
     }
-    async getAll(limit?: number, offset?: number): Promise<Event[]> {
+
+    async getAllActiveEvents(limit?: number, offset?: number): Promise<Event[]> {
 
         try {
             const queryparams: {
@@ -62,7 +67,10 @@ export class EventRepository implements IEventRepository {
             }
 
             return this.prismaClient.event.findMany({
-                ...queryparams
+                ...queryparams,
+                where: {
+                    deletedAt: null
+                },
             })
         } catch (error) {
             console.log('EventRepository - getAll', error)

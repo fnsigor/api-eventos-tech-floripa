@@ -30,7 +30,7 @@ export class GetAllActiveEvents implements IUseCase<GetAllActiveEventsInputDto, 
             return {status: 400, message}
         }
         
-        const events = await this.eventRepo.getAll(input.limit, input.offset)
+        const events = await this.eventRepo.getAllActiveEvents(input.limit, input.offset)
 
         return {status: 200, events}
     }
