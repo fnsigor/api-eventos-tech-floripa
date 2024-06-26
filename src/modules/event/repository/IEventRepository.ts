@@ -9,6 +9,7 @@ export interface IUpdateEventRepoFunction {
     local?: string,
     name?: string,
     startTime?: string
+    registrationLink?: string
 }
 
 export interface IEventRepository {

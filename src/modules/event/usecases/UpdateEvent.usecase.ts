@@ -11,6 +11,7 @@ export interface UpdateEventInputDto {
     local?: string,
     name?: string,
     startTime?: string
+    registrationLink?: string
 }
 
 export interface UpdateEventOutputDto {
@@ -44,13 +45,16 @@ export class UpdateEventUsecase implements IUseCase<UpdateEventInputDto, UpdateE
         const updatedEvent = await this.eventRepo.update(event!.id, input)
 
         if(!updatedEvent){
-            return { message: 'Não foi possível atualizar o evento. Tente novamente', status: 200 }
+            return { message: 'Não foi possível atualizar o evento. Tente novamente', status: 500 }
         }
 
-        return { event:updatedEvent, status: 200, message: 'Evento criado com sucesso.' }
+        return { event:updatedEvent, status: 200, message: 'Evento atualizado com sucesso.' }
     }
 
     async validateInput(input: UpdateEventInputDto): Promise<{message?: string, event?: Event}> {
+
+
+        console.log('link: ',input.registrationLink)
 
         if (input.description) {
             if (!input.description.trim()) {
@@ -61,6 +65,12 @@ export class UpdateEventUsecase implements IUseCase<UpdateEventInputDto, UpdateE
         if (input.imageUrl) {
             if (!input.imageUrl.trim() || !input.imageUrl.includes('https://')) {
                 return { message: 'URL da imagem inválida.' }
+            }
+        }
+
+        if (input.registrationLink) {
+            if (!input.registrationLink.trim() || !input.registrationLink.includes('https://')) {
+                return { message: 'Link de inscrição inválido.' }
             }
         }
 

@@ -10,6 +10,7 @@ interface ICreateEventEntity {
     lastDay: string;
     description: string;
     imageUrl: string;
+    registrationLink: string
 }
 
 
@@ -27,7 +28,7 @@ export class Event {
         public readonly lastDay: Date,
         public readonly description: string,
         public readonly imageUrl: string,
-
+        public readonly registrationLink: string
     ) { }
 
     static create({
@@ -38,7 +39,8 @@ export class Event {
         startTime,
         lastDay,
         description,
-        imageUrl
+        imageUrl,
+        registrationLink
     }: ICreateEventEntity): Event {
         return new Event(
             crypto.randomUUID().toString(),
@@ -49,7 +51,8 @@ export class Event {
             startTime,
             new Date(lastDay.trim()+" 12:00:00"),
             description,
-            imageUrl
+            imageUrl,
+            registrationLink
         )
     }
 }

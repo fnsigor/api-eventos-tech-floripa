@@ -81,7 +81,7 @@ export class EventRepository implements IEventRepository {
 
     async getById(id: string): Promise<Event | null> {
         try {
-            const event = this.prismaClient.event.findUnique({ where: { id } })
+            const event = await this.prismaClient.event.findUnique({ where: { id } })
             return event
         } catch (error) {
             console.log('EventRepository - getById', error)

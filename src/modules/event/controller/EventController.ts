@@ -31,6 +31,7 @@ export class EventController {
             name: req.body.name,
             startTime: req.body.startTime,
             lastDay:req.body.lastDay,
+            registrationLink: req.body.registrationLink
         }
 
         const usecaseResponse = await usecase.execute(inputDto)
@@ -86,6 +87,7 @@ export class EventController {
             local: req.body.local,
             name: req.body.name,
             startTime: req.body.startTime,
+            registrationLink: req.body.registrationLink
         }
 
         const usecaseResponse = await usecase.execute(inputDto)

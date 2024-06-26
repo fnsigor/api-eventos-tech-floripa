@@ -11,7 +11,8 @@ export interface CreateEventInputDto {
     lastDay?: string,
     local: string,
     name: string,
-    startTime: string
+    startTime: string,
+    registrationLink: string
 }
 
 export interface CreateEventOutputDto {
@@ -64,6 +65,10 @@ export class CreateEventUsecase implements IUseCase<CreateEventInputDto, CreateE
 
         if (!input.imageUrl || !input.imageUrl.trim() || !input.imageUrl.includes('https://')) {
             return { message: 'URL da imagem inválida.' }
+        }
+
+        if (!input.registrationLink || !input.registrationLink.trim() || !input.registrationLink.includes('https://')) {
+            return { message: 'Link de inscrição inválido.' }
         }
 
         if (!input.name || !input.name.trim()) {
