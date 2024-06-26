@@ -5,6 +5,7 @@ import { CreateEventInputDto, CreateEventUsecase } from "../usecases/CreateEvent
 import { UserPrismaRepository } from "../../user/repository/user.repository.prisma";
 import { GetAllActiveEvents, GetAllActiveEventsInputDto } from "../usecases/GetAllActiveEvents.usecase";
 import { SoftDeleteEventUsecase, SoftDeleteInputDto } from "../usecases/SoftDeleteEvent.usecase";
+import { UpdateEventInputDto, UpdateEventUsecase } from "../usecases/UpdateEvent.usecase";
 
 export class EventController {
 
@@ -62,6 +63,29 @@ export class EventController {
 
         const inputDto: SoftDeleteInputDto = {
             idEvent: req.body.idEvent
+        }
+
+        const usecaseResponse = await usecase.execute(inputDto)
+
+        res.status(usecaseResponse.status).json({ ...usecaseResponse }).send()
+    }
+
+
+    async updateEvent(req: Request, res: Response) {
+
+        const eventRepo = EventRepository.create(prisma)
+
+        const usecase = UpdateEventUsecase.create(eventRepo)
+
+        const inputDto: UpdateEventInputDto = {
+            id: req.body.id,
+            description: req.body.description,
+            firstDay: req.body.firstDay,
+            imageUrl: req.body.imageUrl,
+            lastDay: req.body.lastDay,
+            local: req.body.local,
+            name: req.body.name,
+            startTime: req.body.startTime,
         }
 
         const usecaseResponse = await usecase.execute(inputDto)

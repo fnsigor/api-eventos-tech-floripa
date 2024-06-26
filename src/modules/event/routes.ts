@@ -6,8 +6,9 @@ const controller = EventController.create()
 const router = Router()
 
 router.post('/event/create', controller.createEvent)
-router.get('/event/getAllActiveEvents', controller.getAllActiveEvents)
-router.delete('/event/softDelete', controller.softDeleteEvent)
+router.get('/event/getAll', controller.getAllActiveEvents)
+router.delete('/event/delete', controller.softDeleteEvent)
+router.patch('/event/update', controller.updateEvent)
 
 
 

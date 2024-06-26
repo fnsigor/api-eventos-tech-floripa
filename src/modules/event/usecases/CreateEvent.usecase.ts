@@ -109,7 +109,7 @@ export class CreateEventUsecase implements IUseCase<CreateEventInputDto, CreateE
         }
 
         if(input.lastDay){
-            const splitedDate = input.firstDay.trim().split('-')
+            const splitedDate = input.lastDay.trim().split('-')
             const year = splitedDate[0]
             const mounth = splitedDate[1]
             const day = splitedDate[2]

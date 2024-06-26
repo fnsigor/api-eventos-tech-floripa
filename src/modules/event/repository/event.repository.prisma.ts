@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { Event } from "../domain/event.entity"
-import { IEventRepository } from './IEventRepository'
+import { IEventRepository, IUpdateEventRepoFunction } from './IEventRepository'
 
 export class EventRepository implements IEventRepository {
 
@@ -39,7 +39,7 @@ export class EventRepository implements IEventRepository {
         try {
 
             await this.prismaClient.event.update({
-                where: {id},
+                where: { id },
                 data: {
                     deletedAt: new Date()
                 }
@@ -73,7 +73,7 @@ export class EventRepository implements IEventRepository {
                 },
             })
         } catch (error) {
-            console.log('EventRepository - getAll', error)
+            console.log('EventRepository - getAllActiveEvents', error)
             return []
         }
 
@@ -84,7 +84,27 @@ export class EventRepository implements IEventRepository {
             const event = this.prismaClient.event.findUnique({ where: { id } })
             return event
         } catch (error) {
-            console.log('EventRepository - getAll', error)
+            console.log('EventRepository - getById', error)
+            return null
+        }
+    }
+
+    async update(id: string, updatedData: IUpdateEventRepoFunction): Promise<Event | null> {
+        try {
+
+            const dbResponse = await this.prismaClient.event.update({
+                data: {
+                    ...updatedData
+                },
+                where: {
+                    id
+                }
+            })
+
+            return dbResponse
+
+        } catch (error) {
+            console.log('EventRepository - update', error)
             return null
         }
     }

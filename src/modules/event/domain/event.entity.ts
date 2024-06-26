@@ -45,9 +45,9 @@ export class Event {
             idUser,
             name,
             local,
-            new Date(firstDay+" 12:00:00"),
+            new Date(firstDay.trim()+" 12:00:00"),
             startTime,
-            new Date(lastDay+" 12:00:00"),
+            new Date(lastDay.trim()+" 12:00:00"),
             description,
             imageUrl
         )
