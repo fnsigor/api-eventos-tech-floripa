@@ -42,7 +42,7 @@ model User {
 }
 
 model Event {
-  id Int @id
+  id String @id
 
   idUser String
   user   User   @relation(fields: [idUser], references: [id])
@@ -55,6 +55,8 @@ model Event {
   description String
 
   imageUrl String
+
+  registrationLink String @default("https://www.meetup.com/")
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

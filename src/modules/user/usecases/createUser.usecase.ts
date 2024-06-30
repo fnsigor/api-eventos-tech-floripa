@@ -1,3 +1,4 @@
+import { sendEmailWthSendGrid } from "../../../utils/sendEmail"
 import { User, UserLevel } from "../domain/user.entity"
 import { UserPrismaRepository } from "../repository/user.repository.prisma"
 import { IUseCase } from "./IUseCase"
@@ -45,6 +46,16 @@ export class CreateUserUsecase implements IUseCase<CreateUserInputDto, CreateUse
         const user = await User.create({ email, password, username })
 
         await this.repository.save(user)
+
+        await sendEmailWthSendGrid({
+            html: `
+            <strong>Senha de acesso à plataforma:</strong>
+            <p>${password}</p>
+            `,
+            subject: "Bem vindo à Eventos Tech Floripa",
+            text: 'This is the text content',
+            to: user.email
+        })
 
         return { user, status: 200, message: 'Usuário criado com sucesso.' }
     }

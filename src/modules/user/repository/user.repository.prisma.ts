@@ -41,8 +41,16 @@ export class UserPrismaRepository implements IUserRepository {
     async getAll(queryParams: { take?: number, skip?: number }) {
 
         return await this.prismaClient.user.findMany({
-            ...queryParams
+            ...queryParams,
+            where: {
+                deletedAt: null
+            }
         })
+    }
+
+
+    async getById(id: string): Promise<User | null> {
+        return await this.prismaClient.user.findUnique({where: {id}})
     }
 
 }

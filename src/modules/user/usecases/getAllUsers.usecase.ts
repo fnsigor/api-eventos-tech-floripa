@@ -18,12 +18,12 @@ interface IUseCaseValidation {
     valid: boolean
 }
 
-export class getAllUsersUsecase implements IUseCase<GetAllUsersInputDto, GetAllUsersOutputDto> {
+export class GetAllUsersUsecase implements IUseCase<GetAllUsersInputDto, GetAllUsersOutputDto> {
 
     private constructor(private readonly repository: UserPrismaRepository) { }
 
     static create(repository: UserPrismaRepository) {
-        return new getAllUsersUsecase(repository)
+        return new GetAllUsersUsecase(repository)
     }
 
     async execute({ limit, offset }: GetAllUsersInputDto): Promise<GetAllUsersOutputDto> {
