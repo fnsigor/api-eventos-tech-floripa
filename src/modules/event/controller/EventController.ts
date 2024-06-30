@@ -36,7 +36,7 @@ export class EventController {
 
         const usecaseResponse = await usecase.execute(inputDto)
 
-        res.status(usecaseResponse.status).json({ ...usecaseResponse }).send()
+        return res.status(usecaseResponse.status).json({ ...usecaseResponse })
     }
 
 
@@ -53,7 +53,7 @@ export class EventController {
 
         const usecaseResponse = await usecase.execute(inputDto)
 
-        res.status(usecaseResponse.status).json({ ...usecaseResponse }).send()
+        return res.status(usecaseResponse.status).json({ ...usecaseResponse })
     }
 
     async softDeleteEvent(req: Request, res: Response) {

@@ -66,7 +66,7 @@ export class EventRepository implements IEventRepository {
                 queryparams.skip = offset
             }
 
-            return this.prismaClient.event.findMany({
+            return await this.prismaClient.event.findMany({
                 ...queryparams,
                 where: {
                     deletedAt: null
