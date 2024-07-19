@@ -13,6 +13,20 @@ interface GetAllActiveEventsOutputDto {
     events?: Event[]
 }
 
+interface IFormatedEvent {
+    formatedFirstDate: string;
+    id: string;
+    idUser: string;
+    name: string;
+    local: string;
+    firstDay: Date;
+    startTime: string;
+    lastDay: Date;
+    description: string;
+    imageUrl: string;
+    registrationLink: string;
+}
+
 export class GetAllActiveEvents implements IUseCase<GetAllActiveEventsInputDto, GetAllActiveEventsOutputDto> {
     private constructor(
         private readonly eventRepo: EventRepository,
@@ -24,28 +38,34 @@ export class GetAllActiveEvents implements IUseCase<GetAllActiveEventsInputDto, 
 
     async execute(input: GetAllActiveEventsInputDto): Promise<GetAllActiveEventsOutputDto> {
 
-        const {message} = this.validation(input)
+        const { message } = this.validateInput(input)
 
-        if(message){
-            return {status: 400, message}
+        if (message) {
+            return { status: 400, message }
         }
-        
+
         const events = await this.eventRepo.getAllActiveEvents(input.limit, input.offset)
 
-        return {status: 200, events}
+        return { status: 200, events: this.formatOutputData(events) }
     }
 
-    validation(input: GetAllActiveEventsInputDto): {message?: string}{
+    private validateInput(input: GetAllActiveEventsInputDto): { message?: string } {
 
-        if(input.limit){
-            if(isNaN(Number(input.limit))) return {message: 'parâmetro "limit" inválido'}
+        if (input.limit) {
+            if (isNaN(Number(input.limit))) return { message: 'parâmetro "limit" inválido' }
         }
 
-        if(input.offset){
-            if(isNaN(Number(input.offset))) return {message: 'parâmetro "offset" inválido'}
+        if (input.offset) {
+            if (isNaN(Number(input.offset))) return { message: 'parâmetro "offset" inválido' }
         }
 
         return {}
     }
 
+    private formatOutputData(events: Event[]): IFormatedEvent[] {
+        return events.map(event => ({
+            ...event,
+            formatedFirstDate: event.firstDay.toISOString().split('T')[0].split('-').reverse().join('/')
+        }))
+    }
 }
